@@ -1,57 +1,67 @@
-#!/usr/bin/python3
-"""storage file created """
+"""the storage of file declared"""
 import json
 from models.base_model import BaseModel
-from models.user import User
 from models.amenity import Amenity
-from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
+from models.user import User
+from models.city import City
 
 
-class FileStorage():
+
+class FileStorage:
+    """storage of abstract in check
+
+    Attributes:
+        __file_path (str): The name of the file to save objects to.
+        __objects (dict): A dictionary of instantiated objects.
     """
-   Storage file created 
-    """
+
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
-        """ instance of public function created
+    def all(self, cls=None):
+        """a dictionary will be returned 
         """
-        return FileStorage.__objects
+        if cls is not None:
+            if type(cls) == str:
+                cls = eval(cls)
+            cls_dict = {}
+            for k, v in self.__objects.items():
+                if type(v) == cls:
+                    cls_dict[k] = v
+            return cls_dict
+        return self.__objects
 
     def new(self, obj):
-        """
-        Creation of relevant files related with assignment
-        """
-        if obj:
-            key_storage = "{}.{}".format(obj.__class__.__name__, obj.id)
-            FileStorage.__objects[key_storage] = obj
+        """constructor with self object in check"""
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
-        """
-        Dictionary that creates the file.json file
-        """
-        new_dictionary = {}
-        for key_check, value_check in FileStorage.__objects.items():
-            new_dictionary[key_check] = value_check.to_dict().copy()
-        with open(FileStorage.__file_path, mode='w') as my_file:
-            json.dump(new_dictionary, my_file)
+        """the file json will be created because of the loophole"""
+        odict = {o: self.__objects[o].to_dict() for o in self.__objects.keys()}
+        with open(self.__file_path, "w", encoding="utf-8") as f:
+            json.dump(odict, f)
 
     def reload(self):
-        """
-       JSON FILE DECENTRALIZED INTO IT
-        """
+        """the file will be desentrailezed"""
         try:
-            with open(FileStorage.__file_path, mode='r') as my_file:
-                new_dictionary = json.load(my_file)
-
-            for key_check, value_check in new_dictionary.items():
-                class_create = value_check.get('__class__')
-                object_create = eval(class_create + '(**value_check)')
-                FileStorage.__objects[key_check] = object_create
-
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                for o in json.load(f).values():
+                    name = o["__class__"]
+                    del o["__class__"]
+                    self.new(eval(name)(**o))
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """delete if there is an existing object"""
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except (AttributeError, KeyError):
+            pass
+
+    def close(self):
+        """recursive function calling another method"""
+        self.reload()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
