@@ -1,8 +1,8 @@
- #!/usr/bin/python3
+#!/usr/bin/python3
 """The HBNB CONSOLE DEFINED AND IMPLEMENETED"""
 import cmd
 from shlex import split
-from models import storage
+from models import new_storage
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
