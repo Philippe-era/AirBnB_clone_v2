@@ -1,14 +1,20 @@
 #!/usr/bin/python3
-"""inheirance of the city classl"""
+"""Defines the City class."""
+from models.base_model import Base
 from models.base_model import BaseModel
+from sqlalchemy import Column
+from sqlalchemy import ForeignKey
+from sqlalchemy import String
+from sqlalchemy.orm import relationship
 
 
-class City(BaseModel):
-    """The class is created based city class"""
-
-    state_id = ""
-    name = ""
-
-    def __init__(self, *args, **kwargs):
-        """use of super to initialize the class"""
-        super().__init__(*args, **kwargs)
+class City(BaseModel, Base):
+    """a city from the database will be returned i think
+    Attributes:
+        __tablename__ (str): The name of the MySQL table to store Cities.
+        name (sqlalchemy String):
+    """
+    __tablename__ = "cities"
+    name = Column(String(128), nullable=False)
+    state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+    places = relationship("Place", backref="cities", cascade="delete")

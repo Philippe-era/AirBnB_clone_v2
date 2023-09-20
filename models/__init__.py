@@ -1,7 +1,14 @@
 #!/usr/bin/python3
-"""unique file created from scratch with location of it"""
-from models.engine.file_storage import FileStorage
+"""
+an object is created now now
+"""
+from os import getenv
 
-"""instance is created and solidfied"""
-new_storage = FileStorage()
+
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    from models.engine.db_storage import DBStorage
+    new_storage = DBStorage()
+else:
+    from models.engine.file_storage import FileStorage
+    new_storage = FileStorage()
 new_storage.reload()
