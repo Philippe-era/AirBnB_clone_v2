@@ -62,7 +62,7 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """links all review places"""
-           list_of_reviews = []
+            list_of_reviews = []
             for review in list(models.new_storage.all(Review).values()):
                 if review.place_id == self.id:
                    list_of_reviews.append(review)

@@ -2,7 +2,7 @@
 """The HBNB CONSOLE DEFINED AND IMPLEMENETED"""
 import cmd
 from shlex import split
-from models import new_storage
+from models import storage
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review

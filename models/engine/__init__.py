@@ -3,5 +3,5 @@
 from models.engine.file_storage import FileStorage
 
 """file stroage class being used to file this ishhue"""
-new_storage = FileStorage()
-new_storage.reload()
+storage = FileStorage()
+storage.reload()
