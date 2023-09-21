@@ -11,12 +11,8 @@ from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
-
-
-
 class HBNBCommand(cmd.Cmd):
     """How the HBNB INTEPRETER MUST WORK ACTUALLY."""
-
     prompt = "(hbnb) "
     __classes = {
         "BaseModel",
@@ -27,20 +23,16 @@ class HBNBCommand(cmd.Cmd):
         "Place",
         "Review"
     }
-
     def emptyline(self):
         """ALL THE EMPTY SPACES WILL BE IGNORED IN THIS CONTEXT"""
         pass
-
     def do_quit(self, line):
         """EXITS THE PROGRAM"""
         return True
-
     def do_EOF(self, line):
         """EOF EXITED IN THE SHOW WE CHECKING"""
         print("")
         return True
-
     def do_create(self, line):
         """Usage: WE WILL USE THE DO CREATE FUNCTION
         """
@@ -48,7 +40,6 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             list_created = line.split(" ")
-
             kwargs = {}
             for initial in range(1, len(list_created)):
                 key, value = tuple(list_created[initial].split("="))
@@ -60,7 +51,6 @@ class HBNBCommand(cmd.Cmd):
                     except (SyntaxError, NameError):
                         continue
                 kwargs[key] = value
-
             if kwargs == {}:
                 obj_created = eval(list_created[0])()
             else:
@@ -68,12 +58,10 @@ class HBNBCommand(cmd.Cmd):
                 storage.new(obj_created)
             print(obj_created.id)
             obj_created.save()
-
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-
     def do_show(self, line):
         """Displays in instances
         Exceptions:
@@ -104,7 +92,6 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         except KeyError:
             print("** no instance found **")
-
     def do_destroy(self, line):
         """Deletes everything unneccesary
         Exceptions:
@@ -136,7 +123,6 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         except KeyError:
             print("** no instance found **")
-
     def do_all(self, line):
         """Usage: we will use the do all class
 """
@@ -148,13 +134,10 @@ class HBNBCommand(cmd.Cmd):
             args = line.split(" ")
             if args[0] not in self.__classes:
                 raise NameError()
-
             o = storage.all(eval(args[0]))
             print([o[k].__str__() for k in o])
-
         except NameError:
             print("** class doesn't exist **")
-
     def do_update(self, line):
         """updates as information is present
         Exceptions:
@@ -199,7 +182,6 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
         except ValueError:
             print("** value missing **")
-
     def count(self, line):
         """count how times classes appeared
         """
@@ -216,7 +198,6 @@ class HBNBCommand(cmd.Cmd):
             print(counter_num)
         except NameError:
             print("** class doesn't exist **")
-
     def strip_clean(self, args):
         """string will be returned to its original place
         Args:
@@ -239,7 +220,6 @@ class HBNBCommand(cmd.Cmd):
         new_string = args[1][args[1].find('(')+1:args[1].find(')')]
         list_store.append(" ".join(new_string.split(", ")))
         return " ".join(i for i in list_store)
-
     def default(self, line):
         """return valid information required
         """
@@ -264,8 +244,5 @@ class HBNBCommand(cmd.Cmd):
                     self.do_update(args)
         else:
             cmd.Cmd.default(self, line)
-
-
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
